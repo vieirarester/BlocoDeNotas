@@ -20,6 +20,6 @@ public class Nota {
 
     @Override
     public String toString() {
-        return titulo + '\'' + descricao + '\'';
+        return this.titulo + '\'' + this.descricao + '\'';
     }
 }

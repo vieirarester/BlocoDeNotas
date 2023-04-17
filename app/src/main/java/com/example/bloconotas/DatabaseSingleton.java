@@ -13,10 +13,10 @@ public class DatabaseSingleton {
 
     }
 
-    public static DatabaseSingleton getInstance(Context context){
+    public static DatabaseSingleton getInstance(Context contexto){
         if(databaseSingleton == null){
             databaseSingleton = new DatabaseSingleton();
-            databaseSingleton.appDatabase = Room.databaseBuilder(context, AppDatabase.class, "banco-notas").allowMainThreadQueries().build();
+            databaseSingleton.appDatabase = Room.databaseBuilder(contexto, AppDatabase.class, "banco-notas").allowMainThreadQueries().build();
         }
         return databaseSingleton;
     }

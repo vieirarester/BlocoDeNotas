@@ -14,10 +14,8 @@ public interface NotaDao {
 
     @Insert
     public void inserir(Nota nota);
-
     @Delete
     public void deletar(Nota nota);
-
     @Query("SELECT * FROM Nota")
     public List<Nota> listarTodos();
 

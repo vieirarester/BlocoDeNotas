@@ -20,10 +20,12 @@ import java.util.List;
 public class PrincipalFragment extends Fragment {
 
     FragmentPrincipalBinding principalBinding;
-
+    NotaDao notaDao;
+    ArrayList<Nota> notas;
+    ArrayList<String> notasString;
+    ArrayAdapter<String> adapter;
 
     public PrincipalFragment() {
-
         super(R.layout.fragment_principal);
     }
 
@@ -44,22 +46,22 @@ public class PrincipalFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        NotaDao notaDao = DatabaseSingleton.getInstance(getContext()).appDatabase.notaDao();
-
-        List<Nota> notas = notaDao.listarTodos();
-        List<String> notasString = new ArrayList<>();
+        notaDao = DatabaseSingleton.getInstance(getContext()).appDatabase.notaDao();
+        notas = (ArrayList<Nota>) notaDao.listarTodos();
+        notasString = new ArrayList<>();
+        adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1, notasString);
 
         for (Nota nota: notas){
             notasString.add(nota.toString());
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext());
-
-        adapter.clear();
-        adapter.addAll(notasString);
-        adapter.notifyDataSetChanged();
-
         principalBinding.listaNotas.setAdapter(adapter);
+
+        //adapter.clear();
+        //adapter.addAll(notasString);
+        //adapter.notifyDataSetChanged();
+
+        //principalBinding.listaNotas.setAdapter(adapter);
 
         principalBinding.cadastrar.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.cadastrarFragment));
 
