@@ -1,5 +1,7 @@
 package com.example.bloconotas;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -57,21 +59,29 @@ public class PrincipalFragment extends Fragment {
 
         principalBinding.listaNotas.setAdapter(adapter);
 
-        //adapter.clear();
-        //adapter.addAll(notasString);
-        //adapter.notifyDataSetChanged();
-
-        //principalBinding.listaNotas.setAdapter(adapter);
-
         principalBinding.cadastrar.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.cadastrarFragment));
+        principalBinding.excluirTodos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder caixaDialogo = new AlertDialog.Builder(getContext());
+                caixaDialogo.setMessage("Deseja deletar todas as notas?");
+                caixaDialogo.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        notaDao.deletarTodos();
 
-        //principalBinding.excluirTodos.setOnClickListener(new View.OnClickListener() {
-        //    @Override
-        //    public void onClick(View view) {
+                        adapter.clear();
+                        adapter.addAll(notasString);
+                        adapter.notifyDataSetChanged();
 
+                        principalBinding.listaNotas.setAdapter(adapter);
+                    }
+                });
 
-        //    }
-        //});
+                caixaDialogo.setNegativeButton("Não", null);
+                caixaDialogo.show();
+            }
+        });
 
     }
 }

@@ -13,10 +13,13 @@ import java.util.List;
 public interface NotaDao {
 
     @Insert
-    public void inserir(Nota nota);
+    void inserir(Nota nota);
     @Delete
-    public void deletar(Nota nota);
+    void deletar(Nota nota);
+    @Query("DELETE FROM Nota")
+    void deletarTodos();
     @Query("SELECT * FROM Nota")
-    public List<Nota> listarTodos();
+    List<Nota> listarTodos();
+
 
 }
