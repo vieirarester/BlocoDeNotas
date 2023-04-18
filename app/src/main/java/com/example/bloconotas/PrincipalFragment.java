@@ -65,13 +65,13 @@ public class PrincipalFragment extends Fragment {
 
         principalBinding.cadastrar.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.cadastrarFragment));
 
-        principalBinding.excluirTodos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        //principalBinding.excluirTodos.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View view) {
 
 
-            }
-        });
+        //    }
+        //});
 
     }
 }
