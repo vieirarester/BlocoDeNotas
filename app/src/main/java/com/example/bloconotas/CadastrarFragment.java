@@ -59,13 +59,14 @@ public class CadastrarFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        notaDao = DatabaseSingleton.getInstance(getContext()).appDatabase.notaDao();
+
         cadastrarBinding.salvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 tituloText = cadastrarBinding.campoTitulo.getText().toString();
                 descricaoText = cadastrarBinding.campoDescricao.getText().toString();
-                notaDao = DatabaseSingleton.getInstance(getContext()).appDatabase.notaDao();
 
                 if (getArguments() != null && getArguments().containsKey("id")) {
                     int id = getArguments().getInt("id");
@@ -83,9 +84,27 @@ public class CadastrarFragment extends Fragment {
                     Nota nota = new Nota(tituloText, descricaoText);
                     notaDao.inserir(nota);
                 }
-                NavController navController = Navigation.findNavController(view);
-                navController.navigate(R.id.principalFragment);
 
+                Navigation.findNavController(view).navigate(R.id.principalFragment);
+            }
+        });
+
+        cadastrarBinding.excluir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (getArguments() != null && getArguments().containsKey("id")) {
+                    int id = getArguments().getInt("id");
+
+                    for (Nota nota : notaDao.listarTodos()) {
+                        if (nota.id == id) {
+
+                            notaDao.deletar(nota);
+                            break;
+                        }
+                    }
+                }
+                Navigation.findNavController(view).navigate(R.id.principalFragment);
             }
         });
     }
