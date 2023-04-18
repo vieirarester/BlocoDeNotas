@@ -7,11 +7,16 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavAction;
+import androidx.navigation.NavDestination;
+import androidx.navigation.NavDirections;
+import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.example.bloconotas.databinding.FragmentPrincipalBinding;
@@ -53,7 +58,7 @@ public class PrincipalFragment extends Fragment {
         notasString = new ArrayList<>();
         adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1, notasString);
 
-        for (Nota nota: notas){
+        for (Nota nota : notas) {
             notasString.add(nota.toString());
         }
 
@@ -83,5 +88,17 @@ public class PrincipalFragment extends Fragment {
             }
         });
 
+        principalBinding.listaNotas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Bundle parametros = new Bundle();
+                parametros.putString("titulo", notas.get(i).titulo);
+                parametros.putString("descricao", notas.get(i).descricao);
+                parametros.putInt("id", notas.get(i).id);
+
+                Navigation.findNavController(view).navigate(R.id.editarFragment, parametros);
+            }
+        });
     }
 }

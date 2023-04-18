@@ -9,7 +9,13 @@
         android:id="@+id/principalFragment"
         android:name="com.example.bloconotas.PrincipalFragment"
         android:label="fragment_principal"
-        tools:layout="@layout/fragment_principal" />
+        tools:layout="@layout/fragment_principal">
+
+        <action
+            android:id="@+id/editarFragment"
+            app:destination="@id/cadastrarFragment"/>
+
+    </fragment>
     <fragment
         android:id="@+id/cadastrarFragment"
         android:name="com.example.bloconotas.CadastrarFragment"

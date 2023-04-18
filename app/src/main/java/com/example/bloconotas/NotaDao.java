@@ -6,6 +6,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public interface NotaDao {
     void deletarTodos();
     @Query("SELECT * FROM Nota")
     List<Nota> listarTodos();
-
+    @Update
+    void atualizar(Nota nota);
 
 }

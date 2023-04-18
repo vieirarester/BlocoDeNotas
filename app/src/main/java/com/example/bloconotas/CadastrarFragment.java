@@ -15,12 +15,16 @@ import android.widget.EditText;
 
 import com.example.bloconotas.databinding.FragmentCadastrarBinding;
 
+import java.util.ArrayList;
+
 
 public class CadastrarFragment extends Fragment {
 
     FragmentCadastrarBinding cadastrarBinding;
+    NotaDao notaDao;
     String tituloText;
     String descricaoText;
+    ArrayList<Nota> notas;
 
     public CadastrarFragment() {
         super(R.layout.fragment_cadastrar);
@@ -37,6 +41,17 @@ public class CadastrarFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         cadastrarBinding = FragmentCadastrarBinding.inflate(inflater, container, false);
+
+        if (getArguments() != null) {
+            String titulo = getArguments().getString("titulo");
+            String descricao = getArguments().getString("descricao");
+            int id = getArguments().getInt("id");
+
+            // valores para preencher os campos do formulário
+            cadastrarBinding.campoTitulo.setText(titulo);
+            cadastrarBinding.campoDescricao.setText(descricao);
+        }
+
         return cadastrarBinding.getRoot();
     }
 
@@ -50,13 +65,24 @@ public class CadastrarFragment extends Fragment {
 
                 tituloText = cadastrarBinding.campoTitulo.getText().toString();
                 descricaoText = cadastrarBinding.campoDescricao.getText().toString();
+                notaDao = DatabaseSingleton.getInstance(getContext()).appDatabase.notaDao();
 
-                Nota nota = new Nota(tituloText, descricaoText);
+                if (getArguments() != null && getArguments().containsKey("id")) {
+                    int id = getArguments().getInt("id");
 
-                NotaDao notaDao = DatabaseSingleton.getInstance(getContext()).appDatabase.notaDao();
+                    for (Nota nota : notaDao.listarTodos()) {
+                        if (nota.id == id) {
+                            nota.titulo = tituloText;
+                            nota.descricao = descricaoText;
 
-                notaDao.inserir(nota);
-
+                            notaDao.atualizar(nota);
+                            break;
+                        }
+                    }
+                } else {
+                    Nota nota = new Nota(tituloText, descricaoText);
+                    notaDao.inserir(nota);
+                }
                 NavController navController = Navigation.findNavController(view);
                 navController.navigate(R.id.principalFragment);
 
