@@ -46,6 +46,12 @@ public class PrincipalFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         principalBinding = FragmentPrincipalBinding.inflate(inflater, container, false);
+
+        notaDao = DatabaseSingleton.getInstance(getContext()).appDatabase.notaDao();
+        notas = (ArrayList<Nota>) notaDao.listarTodos();
+        notasString = new ArrayList<>();
+        adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1, notasString);
+
         return principalBinding.getRoot();
     }
 
@@ -53,16 +59,23 @@ public class PrincipalFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        notaDao = DatabaseSingleton.getInstance(getContext()).appDatabase.notaDao();
-        notas = (ArrayList<Nota>) notaDao.listarTodos();
-        notasString = new ArrayList<>();
-        adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1, notasString);
-
         for (Nota nota : notas) {
             notasString.add(nota.toString());
         }
-
         principalBinding.listaNotas.setAdapter(adapter);
+
+        principalBinding.listaNotas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Bundle parametros = new Bundle();
+                parametros.putString("titulo", notas.get(i).titulo);
+                parametros.putString("descricao", notas.get(i).descricao);
+                parametros.putInt("id", notas.get(i).id);
+
+                Navigation.findNavController(view).navigate(R.id.cadastrarFragment, parametros);
+            }
+        });
 
         principalBinding.cadastrar.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.cadastrarFragment));
         principalBinding.excluirTodos.setOnClickListener(new View.OnClickListener() {
@@ -88,17 +101,5 @@ public class PrincipalFragment extends Fragment {
             }
         });
 
-        principalBinding.listaNotas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                Bundle parametros = new Bundle();
-                parametros.putString("titulo", notas.get(i).titulo);
-                parametros.putString("descricao", notas.get(i).descricao);
-                parametros.putInt("id", notas.get(i).id);
-
-                Navigation.findNavController(view).navigate(R.id.editarFragment, parametros);
-            }
-        });
     }
 }

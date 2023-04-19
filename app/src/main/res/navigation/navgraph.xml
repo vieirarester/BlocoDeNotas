@@ -12,9 +12,8 @@
         tools:layout="@layout/fragment_principal">
 
         <action
-            android:id="@+id/editarFragment"
-            app:destination="@id/cadastrarFragment"/>
-
+            android:id="@+id/action_principalFragment_to_cadastrarFragment"
+            app:destination="@id/cadastrarFragment" />
     </fragment>
     <fragment
         android:id="@+id/cadastrarFragment"

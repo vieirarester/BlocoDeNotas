@@ -43,11 +43,11 @@ public class CadastrarFragment extends Fragment {
         cadastrarBinding = FragmentCadastrarBinding.inflate(inflater, container, false);
 
         if (getArguments() != null) {
-            String titulo = getArguments().getString("titulo");
-            String descricao = getArguments().getString("descricao");
             int id = getArguments().getInt("id");
 
-            // valores para preencher os campos do formulário
+            String titulo = getArguments().getString("titulo");
+            String descricao = getArguments().getString("descricao");
+
             cadastrarBinding.campoTitulo.setText(titulo);
             cadastrarBinding.campoDescricao.setText(descricao);
         }
